@@ -10,7 +10,7 @@ using boost::asio::ip::tcp;
 
 class Server {
 public:
-    Server(int, size_t);
+    Server(int, std::string, size_t);
 
     void start();
 private:
@@ -23,6 +23,7 @@ private:
     tcp::acceptor acceptor;
     boost::thread_group thread_pool;
     size_t threads_count;
+    string root;
 };
 
 #endif // SERVER_H

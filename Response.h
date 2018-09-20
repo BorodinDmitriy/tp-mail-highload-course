@@ -10,6 +10,8 @@ class Response
 {
 private:
 	string headers();
+	bool check_root(string, string);
+	string file_type_definition(string);
 public:
 	const string OK = string("HTTP/1.1 200 OK\r\n");
 	const string BAD_REQUEST = string("HTTP/1.1 400 Bad Request\r\n");
@@ -22,9 +24,15 @@ public:
     const string CONNECTION = string("Connection: close\r\n");
     const string CONTENT_LENGTH = string("Content-Length: ");
     const string CONTENT_TYPE_HTML = string("Content-Type: text/html\r\n");
+    const string CONTENT_TYPE_CSS = string("Content-Type: text/css\r\n");
+    const string CONTENT_TYPE_JS = string("Content-Type: application/javascript\r\n");
+    const string CONTENT_TYPE_GIF = string("Content-Type: image/gif\r\n");
+    const string CONTENT_TYPE_JPEG = string("Content-Type: image/jpeg\r\n");
+    const string CONTENT_TYPE_PNG = string("Content-Type: image/png\r\n");
+    const string CONTENT_TYPE_SWF = string("Content-Type: application/x-shockwave-flash\r\n");
 
-    void get(string, std::function<void (const string&)>);
-    void head(string, std::function<void (const string&)>);
+    void get(string, string, std::function<void (const string&)>, std::function<void (int, size_t)>, bool);
+    void head(string, string, std::function<void (const string&)>);
 
     void not_found(std::function<void (const string&)>);
     void not_allowed(std::function<void (const string&)>);

@@ -4,10 +4,10 @@
 using std::string;
 using std::vector;
 
-Request::Request() {
+Request::Request(string root_directory) : root(root_directory) {
 }
 
-void Request::parse(string request, size_t size, std::function<void (const string&)> headers_sender) {
+void Request::parse(string request, size_t size, std::function<void (const string&)> headers_sender, std::function<void (int, size_t)> file_sender) {
 
     std::istringstream request_string(request);
     request_string >> method;
@@ -27,12 +27,12 @@ void Request::parse(string request, size_t size, std::function<void (const strin
     request_string >> content_length;
 
     if (method == GET) {
-        response.get( url, headers_sender);
+        response.get(root, url, headers_sender, std::move(file_sender), true);
         return;
     } else if (method == HEAD) {
-        response.head( url, headers_sender);
+        response.head(root, url, headers_sender);
     }
-
+    return;
 }
 
 bool Request::is_get_or_head() {

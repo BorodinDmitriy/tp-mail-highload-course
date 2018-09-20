@@ -20,10 +20,11 @@ private:
 	const string HEAD = "HEAD";
 
 	Response response;
+	string root;
 public:
-	Request();
+	Request(string);
 
-	void parse(string, size_t, std::function<void (const string&)>);
+	void parse(string, size_t, std::function<void (const string&)>, std::function<void (int, size_t)>);
 
 	bool is_get_or_head();
 

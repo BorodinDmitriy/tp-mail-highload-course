@@ -1,6 +1,6 @@
 #include "Server.h"
 
-Server::Server(int port, size_t t_count): acceptor(io_service, tcp::endpoint(tcp::v4(), port)), threads_count(t_count) {
+Server::Server(int port, string root_directory, size_t t_count): acceptor(io_service, tcp::endpoint(tcp::v4(), port)), root(root_directory), threads_count(t_count) {
     acceptor.non_blocking(true);
 }
 
@@ -14,7 +14,7 @@ void Server::start() {
 }
 
 void Server::start_accept() {
-    Connection::connection_pointer new_connection(new Connection(io_service));
+    Connection::connection_pointer new_connection(new Connection(io_service, root));
 
     acceptor.async_accept(new_connection->get_socket(),
             boost::bind(&Server::handle_accept, this, new_connection, boost::asio::placeholders::error)
