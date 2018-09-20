@@ -33,10 +33,19 @@ void Connection::handle_read(const boost::system::error_code &error, size_t size
         stop();
         return;
     }
-    std::cout << "bla2" << std::endl;
-    socket.async_write_some(boost::asio::buffer("OK", 2), boost::bind(&Connection::handle_write, shared_from_this(),
+    request.parse(std::string(buf), size,
+                         std::bind(&Connection::send_message, shared_from_this(), std::placeholders::_1));
+}
+
+void Connection::send_message(const std::string &message) {
+
+    socket.async_write_some(
+             boost::asio::buffer(message, message.size()),
+             boost::bind(&Connection::handle_write, shared_from_this(),
                                      boost::asio::placeholders::error,
-                                     boost::asio::placeholders::bytes_transferred));
+                                     boost::asio::placeholders::bytes_transferred)
+
+     );
 }
 
 void Connection::handle_write(const boost::system::error_code& error, std::size_t bytes_transferred) {
