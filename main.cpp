@@ -20,6 +20,7 @@ int main(void) {
             for (int i = 0; i < 3 && conf_file_stream.good(); i++) {
                 conf_file_stream.getline(buf, n);
                 string config_data(buf);
+               // std::cout << config_data << std::endl;
 
                 std::size_t found_bytes_count = config_data.find_last_of(' ');
 
@@ -31,7 +32,7 @@ int main(void) {
                     root = config_data.substr(found_bytes_count + 1);
                 }
 
-                if (strstr(config_data.substr(0, found_bytes_count).c_str(), "threads_limit")) {
+                if (strstr(config_data.substr(0, found_bytes_count).c_str(), "thread_limit")) {
                     threads = std::atoi(config_data.substr(found_bytes_count + 1).c_str());
                 }
 
